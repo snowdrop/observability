@@ -5,8 +5,9 @@ TMPDIR=$(mktemp -d /tmp/prometheus.XXXXXXXXX)
 echo "Using temporary directory $TMPDIR."
 pushd $TMPDIR
 
-echo "Cloning git@github.com:coreos/prometheus-operator.git "
-git clone git@github.com:coreos/prometheus-operator.git
+OPERATOR_VERSION="v0.28.0"
+echo "Cloning git@github.com:coreos/prometheus-operator.git / Version: ${OPERATOR_VERSION}"
+git clone --branch ${OPERATOR_VERSION} git@github.com:coreos/prometheus-operator.git
 
 pushd prometheus-operator
 ls contrib/kube-prometheus/manifests/* | while read manifest; do echo "Removing runAsUser: 65534 or 1000 from $manifest"; sed -i '/runAsUser:[ ]*\(65534\|1000\)/d' $manifest;done
